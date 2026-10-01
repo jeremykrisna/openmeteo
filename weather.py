@@ -4,6 +4,7 @@ import time
 import json
 import os
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -91,7 +92,7 @@ for city, location in kota.items():
             rr.raise_for_status()
             weather_data = rr.json()
             print(weather_data)
-            sekarang = datetime.now()
+            sekarang = datetime.now(ZoneInfo("Asia/Jakarta"))
             timestamp = sekarang.strftime("%Y-%m-%d_%H-%M-%S")
             file_path = os.path.join(raw_folder,f"{city.lower()}_{timestamp}.json")
             print("Saving to:", file_path)
