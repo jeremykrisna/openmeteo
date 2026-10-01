@@ -27,6 +27,9 @@ kota = {
 raw_folder = "raw"
 os.makedirs(raw_folder, exist_ok=True)
 
+print("Current working directory:", os.getcwd())
+print("Raw folder:", os.path.abspath(raw_folder))
+
 loc = []
 
 #for city in kota:
@@ -94,6 +97,8 @@ for location in loc:
             try:
                 with open(file_path,"w", encoding="utf-8") as json_file:
                     json.dump(weather_data,json_file, ensure_ascii=False,indent=4)
+                
+                print("Saved:", file_path)
                 print(f"{city}: Raw data saved successfully")
             except IOError as e:
                 print(
