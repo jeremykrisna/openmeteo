@@ -71,7 +71,8 @@ loc = []
 
 #while True:
 
-for location in loc:
+#for location in loc:
+for city, location in kota.items():
     city = location["city"]
     lat = location["lat"]
     lon = location["lon"]
