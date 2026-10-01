@@ -73,7 +73,7 @@ loc = []
 
 #for location in loc:
 for city, location in kota.items():
-    city = location["city"]
+    #city = location["city"]
     lat = location["lat"]
     lon = location["lon"]
     weather_url = (f"https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={api_key}")
