@@ -24,10 +24,16 @@ jobs:
         env:
           OPENWEATHER_API_KEY: ${{ secrets.OPENWEATHER_API_KEY }}
         run: |
+          mkdir -p raw
           docker run \
             -e OPENWEATHER_API_KEY="$OPENWEATHER_API_KEY" \
             -v "${{ github.workspace }}/raw:/app/raw" \
             weather-pipeline
+            
+      - name: Check raw data
+        run: |
+          echo "Contents of raw:"
+          ls -lah raw/
 
       - name: Commit raw data
         run: |
