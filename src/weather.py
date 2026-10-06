@@ -7,6 +7,12 @@ from zoneinfo import ZoneInfo
 
 import requests
 
+REQUIRED_HOURLY_FIELDS = {
+    "time",
+    "temperature_2m",
+    "relative_humidity_2m",
+    "wind_speed_10m",
+}
 
 KOTA = [
     "Jakarta",
@@ -32,6 +38,19 @@ RAW_FOLDER.mkdir(
 
 JAKARTA_TZ = ZoneInfo("Asia/Jakarta")
 
+def validate_weather_schema(data):
+    hourly = data.get("hourly")
+
+    if not hourly:
+        raise ValueError("Schema drift detected: missing 'hourly' data")
+
+    missing_fields = REQUIRED_HOURLY_FIELDS - hourly.keys()
+
+    if missing_fields:
+        raise ValueError(
+            f"Schema drift detected: missing required fields "
+            f"{sorted(missing_fields)}"
+        )
 
 def get_coordinates(city):
     params = {
@@ -161,6 +180,8 @@ def get_weather(
             response.raise_for_status()
 
             weather_data = response.json()
+            
+            validate_weather_schema(weather_data)
 
             hourly = weather_data["hourly"]
 
@@ -169,13 +190,13 @@ def get_weather(
                 for i, timestamp in enumerate(hourly["time"])
                 if timestamp < end_datetime
             ]
-            
+
             for key in hourly:
                 hourly[key] = [
                     hourly[key][i]
                     for i in filtered_indices
                 ]
-            
+
             weather_data["city"] = city
 
             weather_data["collected_at"] = (
