@@ -1,0 +1,41 @@
+{
+    "latitude": -7.2759223,
+    "longitude": 112.785774,
+    "generationtime_ms": 5.985379219055176,
+    "utc_offset_seconds": 25200,
+    "timezone": "Asia/Jakarta",
+    "timezone_abbreviation": "GMT+7",
+    "elevation": 6.0,
+    "hourly_units": {
+        "time": "iso8601",
+        "temperature_2m": "°C",
+        "relative_humidity_2m": "%",
+        "wind_speed_10m": "km/h"
+    },
+    "hourly": {
+        "time": [
+            "2026-10-06T06:00",
+            "2026-10-06T07:00",
+            "2026-10-06T08:00"
+        ],
+        "temperature_2m": [
+            25.9,
+            27.9,
+            30.0
+        ],
+        "relative_humidity_2m": [
+            79,
+            71,
+            60
+        ],
+        "wind_speed_10m": [
+            5.1,
+            4.4,
+            2.1
+        ]
+    },
+    "city": "Surabaya",
+    "collected_at": "2026-10-06T09:00:15.606784+07:00",
+    "start_hour": "2026-10-06T06:00",
+    "end_hour": "2026-10-06T09:00"
+}

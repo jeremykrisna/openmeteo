@@ -3,3 +3,6 @@ __pycache__/
 .env
 .venv/
 venv/
+backup/*.sql
+backup/*.dump
+backup/*.tar

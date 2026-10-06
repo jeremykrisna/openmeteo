@@ -1,2 +1,7 @@
 requests
-urllib3
+pandas
+SQLAlchemy
+psycopg2-binary
+python-dotenv
+apache-airflow-providers-fab
+apache-airflow-providers-openlineage==2.10.2

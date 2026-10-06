@@ -1,0 +1,25 @@
+{
+    "latitude": -6.221441,
+    "longitude": 106.856186,
+    "generationtime_ms": 54.58986759185791,
+    "utc_offset_seconds": 25200,
+    "timezone": "Asia/Jakarta",
+    "timezone_abbreviation": "GMT+7",
+    "elevation": 18.0,
+    "hourly_units": {
+        "time": "iso8601",
+        "temperature_2m": "°C",
+        "relative_humidity_2m": "%",
+        "wind_speed_10m": "km/h"
+    },
+    "hourly": {
+        "time": [],
+        "temperature_2m": [],
+        "relative_humidity_2m": [],
+        "wind_speed_10m": []
+    },
+    "city": "Jakarta",
+    "collected_at": "2026-10-05T15:00:04.851861+07:00",
+    "start_hour": "2026-10-05T15:00",
+    "end_hour": "2026-10-05T15:00"
+}

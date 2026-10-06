@@ -1,0 +1,362 @@
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: openweather-postgres
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "${POSTGRES_PORT}:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+  airflow-init:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: openweather-airflow-init
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+
+      AIRFLOW__CORE__AUTH_MANAGER: >-
+        airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+      
+      AIRFLOW__API__SECRET_KEY: ${AIRFLOW_API_SECRET_KEY}
+
+      AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW_API_AUTH_JWT_SECRET}
+
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: >-
+        postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+
+      AIRFLOW__CORE__EXECUTION_API_SERVER_URL: >-
+        http://airflow-api-server:8080/execution/
+    
+      AIRFLOW__OPENLINEAGE__TRANSPORT: >-
+        {"type":"http","url":"http://marquez:5000","endpoint":"api/v1/lineage"}
+
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+
+      AIRFLOW_UID: ${AIRFLOW_UID:-50000}
+
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+      AIRFLOW_ADMIN_USERNAME: ${AIRFLOW_ADMIN_USERNAME}
+      AIRFLOW_ADMIN_PASSWORD: ${AIRFLOW_ADMIN_PASSWORD}
+      AIRFLOW_ADMIN_FIRSTNAME: ${AIRFLOW_ADMIN_FIRSTNAME}
+      AIRFLOW_ADMIN_LASTNAME: ${AIRFLOW_ADMIN_LASTNAME}
+      AIRFLOW_ADMIN_EMAIL: ${AIRFLOW_ADMIN_EMAIL}
+
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./src:/opt/airflow/src
+      - ./raw:/opt/airflow/raw
+      - ./.env:/opt/airflow/.env
+      - ./sql:/opt/airflow/sql
+
+    command:
+      - bash
+      - -c
+      - |
+        airflow db migrate
+        airflow fab-db migrate
+        airflow users create \
+          --username "$AIRFLOW_ADMIN_USERNAME" \
+          --password "$AIRFLOW_ADMIN_PASSWORD" \
+          --firstname "$AIRFLOW_ADMIN_FIRSTNAME" \
+          --lastname "$AIRFLOW_ADMIN_LASTNAME" \
+          --role Admin \
+          --email "$AIRFLOW_ADMIN_EMAIL"
+
+  airflow-api-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: openweather-airflow-api-server
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+
+      AIRFLOW__CORE__AUTH_MANAGER: >-
+        airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+    
+      AIRFLOW__API__SECRET_KEY: ${AIRFLOW_API_SECRET_KEY}
+
+      AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW_API_AUTH_JWT_SECRET}
+
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: >-
+        postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+
+      AIRFLOW__CORE__EXECUTION_API_SERVER_URL: >-
+        http://airflow-api-server:8080/execution/
+
+      AIRFLOW__OPENLINEAGE__TRANSPORT: >-
+        {"type":"http","url":"http://marquez:5000","endpoint":"api/v1/lineage"}
+
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+
+      AIRFLOW_UID: ${AIRFLOW_UID:-50000}
+
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./src:/opt/airflow/src
+      - ./raw:/opt/airflow/raw
+      - ./.env:/opt/airflow/.env
+      - ./sql:/opt/airflow/sql
+
+    ports:
+      - "8080:8080"
+
+    command:
+      - api-server
+      - --host
+      - "0.0.0.0"
+      - --port
+      - "8080"
+
+
+  airflow-scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: openweather-airflow-scheduler
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+
+      AIRFLOW__CORE__AUTH_MANAGER: >-
+        airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+
+      AIRFLOW__API__SECRET_KEY: ${AIRFLOW_API_SECRET_KEY}
+
+      AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW_API_AUTH_JWT_SECRET}
+
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: >-
+        postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+
+      AIRFLOW__CORE__EXECUTION_API_SERVER_URL: >-
+        http://airflow-api-server:8080/execution/
+
+      AIRFLOW__OPENLINEAGE__TRANSPORT: >-
+        {"type":"http","url":"http://marquez:5000","endpoint":"api/v1/lineage"}
+
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+
+      AIRFLOW_UID: ${AIRFLOW_UID:-50000}
+
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./src:/opt/airflow/src
+      - ./raw:/opt/airflow/raw
+      - ./.env:/opt/airflow/.env
+      - ./sql:/opt/airflow/sql
+
+    command:
+      - scheduler
+
+
+  airflow-dag-processor:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: openweather-airflow-dag-processor
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+
+      AIRFLOW__CORE__AUTH_MANAGER: >-
+        airflow.providers.fab.auth_manager.fab_auth_manager.FabAuthManager
+
+      AIRFLOW__API__SECRET_KEY: ${AIRFLOW_API_SECRET_KEY}
+
+      AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW_API_AUTH_JWT_SECRET}
+
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: >-
+        postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+
+      AIRFLOW__CORE__EXECUTION_API_SERVER_URL: >-
+        http://airflow-api-server:8080/execution/
+
+      AIRFLOW__OPENLINEAGE__TRANSPORT: >-
+        {"type":"http","url":"http://marquez:5000","endpoint":"api/v1/lineage"}
+
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+
+      AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+
+      AIRFLOW_UID: ${AIRFLOW_UID:-50000}
+
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./src:/opt/airflow/src
+      - ./raw:/opt/airflow/raw
+      - ./.env:/opt/airflow/.env
+      - ./sql:/opt/airflow/sql
+
+    command:
+      - dag-processor
+
+  marquez-postgres:
+    image: postgres:16
+    container_name: openweather-marquez-postgres
+    environment:
+      POSTGRES_DB: marquez
+      POSTGRES_USER: marquez
+      POSTGRES_PASSWORD: ${MARQUEZ_POSTGRES_PASSWORD}
+    volumes:
+      - marquez_postgres_data:/var/lib/postgresql/data
+
+  marquez:
+    image: marquezproject/marquez:latest
+    container_name: openweather-marquez
+    environment:
+      MARQUEZ_CONFIG: /usr/src/app/marquez.yml
+      MARQUEZ_PORT: 5000
+      MARQUEZ_ADMIN_PORT: 5001
+      POSTGRES_HOST: marquez-postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: marquez
+      POSTGRES_USER: marquez
+      POSTGRES_PASSWORD: ${MARQUEZ_POSTGRES_PASSWORD}
+    depends_on:
+      - marquez-postgres
+    ports:
+      - "5002:5000"
+      - "5001:5001"
+    volumes:
+      - ./marquez.yml:/usr/src/app/marquez.yml:ro
+
+  marquez-web:
+    image: marquezproject/marquez-web:latest
+    container_name: openweather-marquez-web
+    environment:
+      MARQUEZ_HOST: marquez
+      MARQUEZ_PORT: 5000
+      WEB_PORT: 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      - marquez
+
+  backup:
+    build:
+      context: .
+      dockerfile: backup.Dockerfile
+    container_name: openweather-backup
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      BACKUP_POSTGRES_USER: ${BACKUP_POSTGRES_USER}
+      BACKUP_POSTGRES_PASSWORD: ${BACKUP_POSTGRES_PASSWORD}
+      BACKUP_DIR: /backup
+      BACKUP_RETENTION: 7
+    volumes:
+      - ./backup:/backup
+    restart: "no"
+
+  backup-scheduler:
+    image: openweather-backup:latest
+
+    container_name: openweather-backup-scheduler
+
+    entrypoint:
+      - python3
+      - /app/backup_scheduler.py
+
+    environment:
+      POSTGRES_HOST: ${POSTGRES_HOST}
+      POSTGRES_PORT: ${POSTGRES_PORT}
+      POSTGRES_DB: ${POSTGRES_DB}
+      BACKUP_POSTGRES_USER: ${BACKUP_POSTGRES_USER}
+      BACKUP_POSTGRES_PASSWORD: ${BACKUP_POSTGRES_PASSWORD}
+      BACKUP_DIR: /backup
+      BACKUP_RETENTION: 7
+      TZ: Asia/Jakarta
+
+    volumes:
+      - ./backup:/backup
+
+    restart: unless-stopped
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+  marquez_postgres_data:

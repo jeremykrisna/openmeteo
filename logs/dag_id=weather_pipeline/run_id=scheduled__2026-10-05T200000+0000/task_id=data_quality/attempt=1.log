@@ -1,0 +1,53 @@
+{"timestamp":"2026-10-06T00:50:43.911271","level":"info","event":"DAG bundles loaded: dags-folder","logger":"airflow.dag_processing.bundles.manager.DagBundlesManager"}
+{"timestamp":"2026-10-06T00:50:43.916631","level":"info","event":"Filling up the DagBag from /opt/airflow/dags/weather_pipeline.py","logger":"airflow.models.dagbag.DagBag"}
+{"timestamp":"2026-10-06T00:50:44.390480","level":"warning","event":"This process (pid=346) is multi-threaded, use of fork() may lead to deadlocks in the child.","category":"DeprecationWarning","filename":"/home/airflow/.local/lib/python3.12/site-packages/airflow/providers/openlineage/plugins/listener.py","lineno":768,"logger":"py.warnings"}
+{"timestamp":"2026-10-06T00:50:48.933523","level":"info","event":"OpenLineageClient will use `http` transport","logger":"openlineage.client.client"}
+{"timestamp":"2026-10-06T00:50:51.085489","level":"info","event":"Successfully emitted OpenLineage `START` event of id `01a10da6-d600-7eb8-a982-e87f43a07c6a`","logger":"airflow.providers.openlineage.plugins.adapter.OpenLineageAdapter"}
+{"timestamp":"2026-10-06T00:50:51.144889","level":"info","event":"Tmp dir root location: /tmp","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.147926","level":"info","event":"Running command: ['/usr/bin/bash', '-c', 'PGPASSWORD=\"$POSTGRES_PASSWORD\" psql -h \"$POSTGRES_HOST\" -p \"$POSTGRES_PORT\" -U \"$POSTGRES_USER\" -d \"$POSTGRES_DB\" -f /opt/airflow/sql/data_quality.sql']","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.193657","level":"info","event":"Output:","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.537395","level":"info","event":" invalid_rows","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.537864","level":"info","event":"--------------","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.538056","level":"info","event":"            0","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.538297","level":"info","event":"(1 row)","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.538543","level":"info","event":"","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.540536","level":"info","event":" city_key | weather_time | duplicate_count","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.541025","level":"info","event":"----------+--------------+-----------------","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.541203","level":"info","event":"(0 rows)","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.541401","level":"info","event":"","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.542806","level":"info","event":" invalid_rows","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.543148","level":"info","event":"--------------","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.543350","level":"info","event":"            0","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.543623","level":"info","event":"(1 row)","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.543776","level":"info","event":"","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.543888","level":"info","event":" invalid_rows","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.543986","level":"info","event":"--------------","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.544080","level":"info","event":"            0","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.544191","level":"info","event":"(1 row)","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.544288","level":"info","event":"","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.545478","level":"info","event":" invalid_rows","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.545752","level":"info","event":"--------------","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.546039","level":"info","event":"            0","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.546187","level":"info","event":"(1 row)","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.546307","level":"info","event":"","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.553018","level":"info","event":" invalid_rows","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.553293","level":"info","event":"--------------","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.553484","level":"info","event":"            0","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.553681","level":"info","event":"(1 row)","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.553794","level":"info","event":"","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.555355","level":"info","event":" invalid_rows","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.555714","level":"info","event":"--------------","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.555861","level":"info","event":"            0","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.555982","level":"info","event":"(1 row)","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.556081","level":"info","event":"","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.559273","level":"info","event":" city_name | observation_count |    min_weather_time    |    max_weather_time","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.559588","level":"info","event":"-----------+-------------------+------------------------+------------------------","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.559817","level":"info","event":" Bandung   |               387 | 2026-09-19 17:00:00+00 | 2026-10-05 22:00:00+00","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.559971","level":"info","event":" Jakarta   |               387 | 2026-09-19 17:00:00+00 | 2026-10-05 22:00:00+00","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.560156","level":"info","event":" Surabaya  |               387 | 2026-09-19 17:00:00+00 | 2026-10-05 22:00:00+00","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.560309","level":"info","event":"(3 rows)","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.560435","level":"info","event":"","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.564860","level":"info","event":"Command exited with return code 0","logger":"airflow.task.hooks.airflow.providers.standard.hooks.subprocess.SubprocessHook"}
+{"timestamp":"2026-10-06T00:50:51.566762","level":"info","event":"Pushing xcom","ti":"RuntimeTaskInstance(id=UUID('01a10eaf-1edf-718d-b1be-aeaa95e59f2b'), task_id='data_quality', dag_id='weather_pipeline', run_id='scheduled__2026-10-05T20:00:00+00:00', try_number=1, map_index=-1, hostname='c98161626874', context_carrier=None, task=<Task(BashOperator): data_quality>, bundle_instance=LocalDagBundle(name=dags-folder), max_tries=2, start_date=datetime.datetime(2026, 10, 6, 0, 50, 43, 537411, tzinfo=datetime.timezone.utc), end_date=None, state=<TaskInstanceState.RUNNING: 'running'>, is_mapped=False, rendered_map_index=None, log_url='http://localhost:8080/dags/weather_pipeline/runs/scheduled__2026-10-05T20%3A00%3A00%2B00%3A00/tasks/data_quality?try_number=1')","logger":"task"}
+{"timestamp":"2026-10-06T00:50:54.371993","level":"info","event":"OpenLineageClient will use `http` transport","logger":"openlineage.client.client"}
+{"timestamp":"2026-10-06T00:50:54.769325","level":"info","event":"Successfully emitted OpenLineage `COMPLETE` event of id `01a10da6-d600-7eb8-a982-e87f43a07c6a`","logger":"airflow.providers.openlineage.plugins.adapter.OpenLineageAdapter"}

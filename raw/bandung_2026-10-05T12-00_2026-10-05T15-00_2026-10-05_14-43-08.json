@@ -1,0 +1,45 @@
+{
+    "latitude": -6.9244285,
+    "longitude": 107.60539,
+    "generationtime_ms": 0.10311603546142578,
+    "utc_offset_seconds": 25200,
+    "timezone": "Asia/Jakarta",
+    "timezone_abbreviation": "GMT+7",
+    "elevation": 707.0,
+    "hourly_units": {
+        "time": "iso8601",
+        "temperature_2m": "°C",
+        "relative_humidity_2m": "%",
+        "wind_speed_10m": "km/h"
+    },
+    "hourly": {
+        "time": [
+            "2026-10-05T12:00",
+            "2026-10-05T13:00",
+            "2026-10-05T14:00",
+            "2026-10-05T15:00"
+        ],
+        "temperature_2m": [
+            31.3,
+            31.6,
+            29.4,
+            29.7
+        ],
+        "relative_humidity_2m": [
+            35,
+            35,
+            44,
+            49
+        ],
+        "wind_speed_10m": [
+            2.9,
+            2.2,
+            9.9,
+            6.5
+        ]
+    },
+    "city": "Bandung",
+    "collected_at": "2026-10-05T14:43:08.586569+07:00",
+    "start_hour": "2026-10-05T12:00",
+    "end_hour": "2026-10-05T15:00"
+}

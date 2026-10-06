@@ -3,6 +3,7 @@ name: OpenWeather Pipeline
 on:
   schedule:
     - cron: "0 */3 * * *"
+      timezone: "Asia/Jakarta"
 
   workflow_dispatch:
 
@@ -29,7 +30,7 @@ jobs:
             -e OPENWEATHER_API_KEY="$OPENWEATHER_API_KEY" \
             -v "${{ github.workspace }}/raw:/app/raw" \
             weather-pipeline
-            
+
       - name: Check raw data
         run: |
           echo "Contents of raw:"
