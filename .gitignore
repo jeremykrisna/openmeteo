@@ -6,3 +6,4 @@ venv/
 backup/*.sql
 backup/*.dump
 backup/*.tar
+logs/
